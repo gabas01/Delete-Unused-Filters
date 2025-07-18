@@ -192,7 +192,7 @@
     },
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
-      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nview_templates = IN[0]\r\n\r\napplied_filters = []\r\n\r\nfor view in view_templates:\r\n    # Desembrulha o elemento do Dynamo para o elemento da API do Revit\r\n    view = UnwrapElement(view)\r\n    \r\n    # Obtém os IDs dos filtros aplicados na vista\r\n    filter_ids = view.GetFilters()\r\n    \r\n    if filter_ids:\r\n        for filter_id in filter_ids:\r\n            applied_filters.append(doc.GetElement(filter_id))\r\n\r\nOUT = applied_filters",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n# Importa a função para \"desembrulhar\" elementos do Dynamo\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n# A entrada IN[0] deve ser a lista de templates de vista\r\nview_templates = IN[0]\r\n\r\n# Garante que a entrada seja uma lista para evitar erros\r\nif not isinstance(view_templates, list):\r\n    view_templates = [view_templates]\r\n\r\n# Usar um \"set\" é uma forma eficiente de armazenar itens únicos\r\napplied_filter_ids = set()\r\n\r\nfor view_template_dyn in view_templates:\r\n    # Desembrulha o elemento do Dynamo para usá-lo com a API do Revit\r\n    view = UnwrapElement(view_template_dyn)\r\n    \r\n    # Verifica se o elemento é válido\r\n    if view and hasattr(view, 'GetFilters'):\r\n        # Pega os Ids dos filtros aplicados ao template\r\n        filter_ids = view.GetFilters()\r\n        \r\n        if filter_ids:\r\n            for filter_id in filter_ids:\r\n                applied_filter_ids.add(filter_id)\r\n\r\n# Converte o set de IDs de volta para uma lista de Elementos\r\napplied_filters = [doc.GetElement(fid) for fid in applied_filter_ids]\r\n\r\nOUT = applied_filters",
       "Engine": "CPython3",
       "EngineName": "CPython3",
       "VariableInputPorts": true,
@@ -722,7 +722,13 @@
     {
       "Start": "a0b030572f424bb0a8540583acbe2e33",
       "End": "411f569d878b49acbcbfbf97debbe5b6",
-      "Id": "1e4af2284cf14d9ba051c6e72d3671cc",
+      "Id": "af71d8c60554437a820118c4a0bf1d89",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "a0b030572f424bb0a8540583acbe2e33",
+      "End": "3c58577352e54de8a2bf0fcf1d776c8b",
+      "Id": "7f728c86280d4bb2b750c35640bbe2b9",
       "IsHidden": "False"
     },
     {
@@ -735,12 +741,6 @@
       "Start": "ef9351148e2e4facb651a21d57d86e63",
       "End": "c8c709138c104083b2dbd8f2c2acd1c7",
       "Id": "77ce90cf3b1e4200ba4a8328af5e7299",
-      "IsHidden": "False"
-    },
-    {
-      "Start": "894660f9f52a420d9c806950e03bf82a",
-      "End": "3c58577352e54de8a2bf0fcf1d776c8b",
-      "Id": "99d8bb4282934b009bb770d9726e602a",
       "IsHidden": "False"
     },
     {
@@ -904,8 +904,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": -44.592282640688438,
-        "Y": 425.40486381698776
+        "X": -123.79106886188771,
+        "Y": 353.74881914066464
       },
       {
         "Id": "c81a0b9ea73f4d54ae4244d8ab4a905a",
@@ -914,8 +914,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 226.27395439525026,
-        "Y": 425.3483544150248
+        "X": 173.47476358111737,
+        "Y": 353.69230973870168
       },
       {
         "Id": "6dd86e6bad32461398cb1a903b7e5b84",
@@ -924,8 +924,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 479.83572349465362,
-        "Y": 619.24678176798727
+        "X": 477.57290103119044,
+        "Y": 569.46468757180492
       },
       {
         "Id": "9825e92757994482b2200298fd4d9ca0",
@@ -944,8 +944,8 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "ShowGeometry": true,
-        "X": 186.18998478494177,
-        "Y": 619.37935676213772
+        "X": 114.41748406826218,
+        "Y": 568.71641507977563
       },
       {
         "Id": "b3d04c14fc6047be85a0a053443ecf91",
@@ -1069,8 +1069,8 @@
       }
     ],
     "Annotations": [],
-    "X": 188.69673696811373,
-    "Y": 141.03966833074873,
-    "Zoom": 0.55850469584886153
+    "X": 198.06721935686733,
+    "Y": 181.59387341457602,
+    "Zoom": 0.55527211944599908
   }
 }
