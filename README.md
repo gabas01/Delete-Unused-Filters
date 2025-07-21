@@ -39,7 +39,8 @@ The script is organized into three logical groups for clarity:
 -   **Group 1: Collect Unused Filters (Blue):** This group contains the main Python script. It reads the Revit model, gets a list of all view filters, checks their usage across all view templates, and outputs a final list of only the unused ones.
 -   **Group 2: Create Selection Interface (Orange):** This group uses the Data-Shapes package to build the pop-up window. It takes the list of unused filters, displays their names, and configures all UI elements like buttons, text, and window size.
 -   **Group 3: Execute Deletion (Red):** This final group takes the user's selection from the UI, processes it, and runs the command to permanently delete the selected filters from the Revit project.
-<img width="2600" height="974" alt="Delete Unused Filters" src="https://github.com/user-attachments/assets/8abed271-02e9-4b19-ba08-72a3f70a5acf" />
+<img width="3526" height="1038" alt="Delete Unused Filters" src="https://github.com/user-attachments/assets/f60a83ec-2c24-4522-808c-bc0a70abad2b" />
+
 
 ## Core Python Scripts
 
